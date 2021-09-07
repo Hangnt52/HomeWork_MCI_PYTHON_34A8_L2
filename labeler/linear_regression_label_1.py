@@ -1,5 +1,7 @@
 import pandas as pd
-import csv
+
+from labeler.onehot_load import onehot_encode
+from sklearn.preprocessing import StandardScaler
 
 class FuelConsumptionLabeler:
     """
@@ -9,13 +11,19 @@ class FuelConsumptionLabeler:
     """
     def __init__(self, is_take_column=True):
         if is_take_column:
-            data = pd.read_csv('C:/Users/HangNT/PycharmProjects/HomeWork_MCI_PYTHON_34A8_L2/Linear_Regression/FuelConsumptionCo2.csv')
-            df = pd.DataFrame(data)
-            df = pd.DataFrame(data)
-            df1 = df.rename(columns={"CO2EMISSIONS": "LABEL"})
+            data_csv = pd.read_csv(
+                'C:/Users/HangNT/PycharmProjects/HomeWork_MCI_PYTHON_34A8_L2/Linear_Regression/FuelConsumptionCo2.csv')
+            data_fr = pd.DataFrame(data_csv)
+            data = data_fr.rename(columns={"CO2EMISSIONS": "LABEL"})
+            data = data.drop('TRANSMISSION', axis=1)
 
-            self.feature = df1.drop(columns='LABEL').values
-            self.label = df1.LABEL.values
+            data1 = onehot_encode(data, ['MAKE'], ['MAKE'])
+            data2 = onehot_encode(data1, ['MODEL'], ['MODEL'])
+            data3 = onehot_encode(data2, ['VEHICLECLASS'], ['VEHICLECLASS'])
+            data4 = onehot_encode(data3, ['FUELTYPE'], ['FUELTYPE'])
+
+            self.feature = data4.drop(columns='LABEL').values
+            self.label = data4.LABEL.values
 
         else:
             self.feature, self.label
