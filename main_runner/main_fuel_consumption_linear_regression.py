@@ -13,6 +13,11 @@ predicted = fuel_consumption_model.predict_label()
 
 mse, mae, r2_score = fuel_consumption_model.evaluate(predicted)
 
+with open('C:/Users/HangNT/PycharmProjects/HomeWork_MCI_PYTHON_34A8_L2/data_loader/CO2Emissions_Description.txt') as f:
+    lines = f.readlines()
+
+print(lines)
+
 print(f"Mean squared err: {mse} - Mean absolute error: {mae} - R2 score: {r2_score}")
 
 result = pd.DataFrame({'actual': y_test, 'predicted': predicted})
